@@ -1,0 +1,86 @@
+/* Sayfa Arka Planı (Linear Gradient ve Ortalama) */
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex; /* İçeriği ortalamak için Flexbox */
+    justify-content: center;
+    align-items: center;
+    /* İpucu: Hex kodlarıyla şık bir mavimsi-mor geçiş */
+    background: linear-gradient(135deg, #74ebd5 0%, #9face6 100%);
+    font-family: 'Open Sans', sans-serif;
+}
+
+/* Profil Kartı (Kutu Modeli Kullanımı) */
+.profile-card {
+    background-color: #ffffff;
+    width: 100%;
+    max-width: 350px; /* Genişliği sınırlandırdık */
+    padding: 40px 30px; /* Kutu içi boşluk (Box Model) */
+    border-radius: 20px; /* Köşeleri yuvarlattık */
+    text-align: center;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); /* Derinlik veren gölge */
+}
+
+/* Yuvarlak Profil Resmi ve Kalın Çerçeve */
+.profile-image {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%; /* Tam yuvarlak yapar */
+    object-fit: cover;
+    border: 5px solid #3498db; /* Kalın ve renkli border (Kutu Modeli) */
+    padding: 3px; /* Çerçeve ile resim arasına minik bir beyaz boşluk */
+    margin-bottom: 15px; /* Altındaki yazıyla mesafe (Box Model) */
+}
+
+/* İsim (Kalın ve Belirgin) */
+h2 {
+    font-family: 'Montserrat', sans-serif;
+    color: #2c3e50;
+    font-size: 1.8rem;
+    margin: 0;
+}
+
+/* Unvan (İnce ve Gri Tonlarda) */
+.title {
+    color: #95a5a6; /* Gri tonu */
+    font-size: 1rem;
+    font-weight: 300; /* İnce font */
+    margin-top: 5px;
+    margin-bottom: 20px;
+}
+
+/* Biyografi Metni */
+.bio {
+    color: #555555;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+/* Sosyal Medya Butonları Konteyneri */
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 15px; /* Butonlar arası boşluk */
+}
+
+/* Butonların Kendisi */
+.social-links a {
+    background-color: #3498db; /* Mavi arka plan */
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px; /* Kutu içi boşluk */
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    /* Hover için geçiş animasyonu süresi */
+    transition: all 0.3s ease; 
+}
+
+/* Fare Butonun Üzerine Gelince (Etkileşim - Hover) */
+.social-links a:hover {
+    background-color: #2980b9; /* Daha koyu bir mavi */
+    transform: translateY(-3px); /* İstenen yukarı kalkma efekti */
+    box-shadow: 0 5px 15px rgba(41, 128, 185, 0.4); /* Kalkarken hafif gölge eklensin */
+}

@@ -1,0 +1,151 @@
+/* Google Fonts'tan modern bir font çekiyoruz */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+/* CSS Değişkenleri (Renk paletini tek yerden yönetmek için) */
+:root {
+    --primary-color: #e67e22; /* İştah açıcı turuncu */
+    --secondary-color: #d35400;
+    --bg-gradient: linear-gradient(135deg, #fdfaf7 0%, #f4e8e1 100%);
+    --card-bg: #ffffff;
+    --text-dark: #2c3e50;
+    --text-muted: #7f8c8d;
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* Genel Sayfa Ayarları */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--bg-gradient);
+    color: var(--text-dark);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Başlık Alanı - Modern ve Temiz */
+header {
+    background-color: transparent;
+    color: var(--text-dark);
+    width: 100%;
+    text-align: center;
+    padding: 40px 20px 20px;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.8rem;
+    color: var(--secondary-color);
+    letter-spacing: -1px;
+}
+
+header p {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    font-weight: 300;
+}
+
+/* Ana İçerik Kartı */
+main {
+    background-color: var(--card-bg);
+    max-width: 750px;
+    width: 90%;
+    margin: 20px 0 50px;
+    padding: 40px;
+    border-radius: 20px; /* Daha yumuşak köşeler */
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease;
+}
+
+main:hover {
+    transform: translateY(-5px); /* Kartın üzerine gelince hafifçe havaya kalkma efekti */
+}
+
+/* Yemek Görseli */
+img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover; /* Resmi bozmadan kırpar */
+    border-radius: 15px;
+    margin-bottom: 30px;
+    box-shadow: 0 8px 20px rgba(230, 126, 34, 0.15);
+}
+
+/* Alt Başlıklar */
+h2 {
+    color: var(--primary-color);
+    font-size: 1.6rem;
+    border-bottom: 2px dashed #fceadd;
+    padding-bottom: 10px;
+    margin-top: 40px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Listeler için Ortak Ayarlar */
+ul, ol {
+    padding-left: 0;
+    list-style-position: inside;
+}
+
+li {
+    background: #fdfcfb;
+    margin-bottom: 12px;
+    padding: 15px 20px;
+    border-radius: 10px;
+    border-left: 4px solid var(--primary-color);
+    transition: all 0.2s ease;
+    font-size: 1.05rem;
+    line-height: 1.6;
+}
+
+/* Liste Elemanlarına Hover (Üzerine Gelme) Efekti */
+li:hover {
+    background: #fff3e0;
+    transform: translateX(5px); /* Sağa doğru hafif kayma */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+}
+
+/* Sırasız Liste (Malzemeler) Özel Tasarımı */
+ul {
+    list-style: none; /* Varsayılan noktaları kaldır */
+}
+
+ul li::before {
+    content: "🧂"; /* Emojiyi madde işareti olarak kullanma */
+    margin-right: 10px;
+}
+
+/* Footer (Alt Bilgi) */
+footer {
+    text-align: center;
+    padding: 20px;
+    width: 100%;
+    margin-top: auto;
+}
+
+footer hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(to right, transparent, #ccc, transparent);
+    margin-bottom: 20px;
+}
+
+footer a {
+    display: inline-block;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+footer a:hover {
+    background-color: var(--secondary-color);
+    transform: scale(1.05); /* Butonu hafif büyütme */
+}
