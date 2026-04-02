@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kripto Para Takipçisi</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #1e272e;
+      color: #d2dae2;
+      display: flex;
+      justify-content: center;
+      padding-top: 50px;
+    }
+    .kutu {
+      background-color: #2c3e50;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+      width: 100%;
+      max-width: 350px;
+      text-align: center;
+    }
+    h2 {
+      margin-top: 0;
+      border-bottom: 2px solid #34495e;
+      padding-bottom: 10px;
+    }
+    .kripto-liste {
+      list-style: none;
+      padding: 0;
+      margin: 20px 0;
+    }
+    .kripto-liste li {
+      background-color: #34495e;
+      margin-bottom: 10px;
+      padding: 15px;
+      border-radius: 8px;
+      font-size: 1.2rem;
+      display: flex;
+      justify-content: space-between;
+    }
+    button {
+      padding: 12px 20px;
+      font-size: 1rem;
+      background-color: #0fb9b1;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      width: 100%;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #0bd1c8;
+    }
+    
+    /* Bonus İsteri İçin Renk Sınıfları */
+    .yuksek-fiyat {
+      color: #2ecc71; /* Yeşil */
+      font-weight: bold;
+    }
+    .dusuk-fiyat {
+      color: #e74c3c; /* Kırmızı */
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="kutu">
+    <h2>Kripto Fiyatları</h2>
+    <ul class="kripto-liste" id="liste">
+      <li>Veriler yükleniyor...</li>
+    </ul>
+    <button id="yenileBtn">Fiyatları Yenile</button>
+  </div>
+
+  <script>
+    // Kullanacağımız API adresi
+    const API_URL = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,dogecoin&vs_currencies=usd";
+    
+    const liste = document.getElementById("liste");
+    const yenileBtn = document.getElementById("yenileBtn");
+
+    // Fiyatları çeken ve ekrana yazdıran ana fonksiyon
+    function fiyatlariGetir() {
+      // Yükleniyor mesajı gösterelim
+      liste.innerHTML = "<li>Veriler güncelleniyor...</li>";
+
+      // 1. Fetch ile API'ye istek atıyoruz
+      fetch(API_URL)
+        .then(response => {
+          // Gelen ham cevabı JSON formatına çeviriyoruz
+          return response.json();
+        })
+        .then(veri => {
+          // İPUCU: Gelen verinin yapısını görmek için konsola yazdırıyoruz.
+          // F12 ile konsolu açıp "veri.bitcoin.usd" gibi yolları inceleyebilirsin.
+          console.log("API'den Gelen Veri:", veri);
+
+          // Ekrana basmadan önce listeyi temizleyelim
+          liste.innerHTML = "";
+
+          // Kripto paralarımızı dönüp ekrana basmak için bir dizi oluşturduk
+          const kriptolar = [
+            { isim: "Bitcoin", fiyat: veri.bitcoin.usd },
+            { isim: "Ethereum", fiyat: veri.ethereum.usd },
+            { isim: "Dogecoin", fiyat: veri.dogecoin.usd }
+          ];
+
+          // Her bir kripto para için liste elemanı (li) oluşturuyoruz
+          kriptolar.forEach(kripto => {
+            const li = document.createElement("li");
+            
+            // İsim kısmı
+            const isimSpan = document.createElement("span");
+            isimSpan.textContent = kripto.isim + ":";
+
+            // Fiyat kısmı
+            const fiyatSpan = document.createElement("span");
+            fiyatSpan.textContent = "$" + kripto.fiyat.toLocaleString(); // Rakamı virgüllerle ayırarak okunaklı yazar
+
+            // 2. Bonus: Fiyat 50.000$'dan yüksekse yeşil, düşükse kırmızı yapma
+            if (kripto.fiyat > 50000) {
+              fiyatSpan.classList.add("yuksek-fiyat");
+            } else {
+              fiyatSpan.classList.add("dusuk-fiyat");
+            }
+
+            // Elementleri birleştirip listeye ekliyoruz
+            li.appendChild(isimSpan);
+            li.appendChild(fiyatSpan);
+            liste.appendChild(li);
+          });
+        })
+        .catch(hata => {
+          // Eğer internet yoksa veya API çöktüyse burası çalışır
+          console.error("Veri çekilirken hata oluştu:", hata);
+          liste.innerHTML = "<li style='color: #e74c3c;'>Veriler alınamadı!</li>";
+        });
+    }
+
+    // 3. Olay Dinleyicileri
+    // Sayfa ilk açıldığında fiyatları getir
+    fiyatlariGetir();
+
+    // Yenile butonuna basıldığında fiyatları tekrar getir
+    yenileBtn.addEventListener("click", fiyatlariGetir);
+
+  </script>
+</body>
+</html>
