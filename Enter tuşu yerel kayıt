@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Görev Yöneticisi</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f2f5;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+    }
+    .uygulama-kutusu {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+    .girdi-alani {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    input[type="text"] {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      padding: 10px 15px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+    li {
+      padding: 12px;
+      margin-bottom: 8px;
+      background-color: #f8f9fa; /* Varsayılan Gri */
+      border-radius: 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-left: 5px solid #ccc;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    /* "Acil" kelimesi geçiyorsa eklenecek sınıf */
+    .acil-gorev {
+      background-color: #ffebee !important; /* Açık Kırmızı/Pembe */
+      border-left: 5px solid #ff4757;
+    }
+    /* Görev tamamlandığında üstünü çizmek için sınıf */
+    .tamamlandi .metin {
+      text-decoration: line-through;
+      color: #888;
+    }
+    .sil-ikonu {
+      color: #dc3545;
+      font-weight: bold;
+      cursor: pointer;
+      padding: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="uygulama-kutusu">
+    <h2>Görev Listesi</h2>
+    <div class="girdi-alani">
+      <input type="text" id="gorevInput" placeholder="Yeni görev girin...">
+      <button id="ekleBtn">Ekle</button>
+    </div>
+    <ul id="liste">
+      </ul>
+  </div>
+
+  <script>
+    const input = document.getElementById("gorevInput");
+    const ekleBtn = document.getElementById("ekleBtn");
+    const liste = document.getElementById("liste");
+
+    // 1. Eleman Ekleme Fonksiyonu
+    function elemanEkle() {
+      const gorevMetni = input.value.trim();
+
+      // Boş giriş kontrolü
+      if (gorevMetni === "") {
+        alert("Lütfen bir görev girin!");
+        return;
+      }
+
+      // Yeni li elementi oluştur
+      const li = document.createElement("li");
+
+      // İçeriği oluştur (Görev metni ve sil butonu)
+      // İpucu: Çöp kutusunu temsil etmesi için bir <span> veya <i> kullanıyoruz
+      li.innerHTML = `
+        <span class="metin">${gorevMetni}</span>
+        <span class="sil-ikonu">X</span>
+      `;
+
+      // 2. Öncelik Rengi (Şartlı Biçimlendirme)
+      // Eğer metin "Acil" veya "acil" kelimesini içeriyorsa özel class ekle
+      if (gorevMetni.toLowerCase().includes("acil")) {
+        li.classList.add("acil-gorev");
+      }
+
+      // Elemanı listeye ekle ve input'u temizle
+      liste.appendChild(li);
+      input.value = "";
+    }
+
+    // Butona tıklanınca eleman ekle
+    ekleBtn.addEventListener("click", elemanEkle);
+
+    // 3. Enter Tuşu Desteği
+    input.addEventListener("keydown", function(event) {
+      if (event.key === "Enter") {
+        elemanEkle();
+      }
+    });
+
+    // 4. Liste Üzerinde Tıklama Olayları (Event Delegation & closest() Kullanımı)
+    liste.addEventListener("click", function(olay) {
+      // Tıklanan elementi yakala
+      const tiklananEleman = olay.target;
+      
+      // HATA AYIKLAMA İPUCU: Nereye tıkladığını görmek için konsola yazdırabilirsin
+      // console.log("Tıklanan Element:", tiklananEleman.tagName, tiklananEleman.className);
+
+      // SİLME İŞLEMİ: closest() ile tıklanan hedefin bir 'sil-ikonu' olup olmadığını veya 
+      // 'sil-ikonu'nun içinde bir şeye (örneğin font-awesome <i> etiketine) tıklanıp tıklanmadığını kontrol ediyoruz.
+      if (tiklananEleman.closest(".sil-ikonu")) {
+        // Eğer sil ikonuna tıklandıysa, o ikonun içinde bulunduğu 'li' elementini bul ve sil
+        const silinecekLi = tiklananEleman.closest("li");
+        silinecekLi.remove();
+      } 
+      // ÜSTÜNÜ ÇİZME İŞLEMİ: Sil butonuna değil de listenin kendi gövdesine (li veya metin) tıklandıysa
+      else if (tiklananEleman.closest("li")) {
+        const isaretlenecekLi = tiklananEleman.closest("li");
+        isaretlenecekLi.classList.toggle("tamamlandi");
+      }
+    });
+  </script>
+
+</body>
+</html>
