@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Karanlık Mod ve LocalStorage</title>
+  <style>
+    /* 1. Varsayılan (Gündüz) Tema Stilleri */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f5f6fa;
+      color: #2f3542;
+      /* Tema değişirken yumuşak bir geçiş animasyonu ekleyelim */
+      transition: background-color 0.4s ease, color 0.4s ease; 
+      padding: 50px;
+      margin: 0;
+    }
+
+    /* 2. Karanlık Mod (Dark Theme) Sınıfı */
+    .dark-theme {
+      background-color: #1e272e;
+      color: #f5f6fa;
+    }
+
+    /* Sağ Üstteki Butonun Tasarımı */
+    #temaButonu {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      border: 2px solid #2f3542;
+      background-color: transparent;
+      color: inherit; /* Yazı rengini body'den miras alır */
+      border-radius: 25px;
+      transition: all 0.3s;
+    }
+
+    /* Butonun üzerine gelinceki efekti */
+    #temaButonu:hover {
+      background-color: #2f3542;
+      color: #f5f6fa;
+    }
+
+    /* Karanlık mod aktifken butonun hover rengi tersine dönsün */
+    .dark-theme #temaButonu {
+      border-color: #f5f6fa;
+    }
+    .dark-theme #temaButonu:hover {
+      background-color: #f5f6fa;
+      color: #1e272e;
+    }
+
+    .icerik-kutusu {
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+
+  <button id="temaButonu">🌙 Gece Modu</button>
+
+  <div class="icerik-kutusu">
+    <h1>Karanlık Mod Örneği</h1>
+    <p>
+      Bu sayfa, kullanıcının tema tercihini <strong>localStorage</strong> üzerinde saklar. 
+      Sağ üstteki butona tıklayarak temayı değiştirebilirsiniz. Sayfayı yenilediğinizde (F5), 
+      seçtiğiniz temanın kaldığı yerden devam ettiğini göreceksiniz.
+    </p>
+  </div>
+
+  <script>
+    // HTML elemanlarını seçiyoruz
+    const temaButonu = document.getElementById("temaButonu");
+    const body = document.body;
+
+    // 1. ADIM: Sayfa Yüklendiğinde Hafızayı (LocalStorage) Kontrol Et
+    // Tarayıcının hafızasından 'kullaniciTemasi' adındaki veriyi okuyoruz
+    const kayitliTema = localStorage.getItem("kullaniciTemasi");
+
+    // Eğer hafızadaki değer 'dark' ise, sayfaya karanlık modu uygula
+    if (kayitliTema === "dark") {
+      body.classList.add("dark-theme");
+      temaButonu.textContent = "☀️ Gündüz Modu"; // Butonun yazısını güncelle
+    }
+
+    // 2. ADIM: Butona Tıklama Olayı (Event Listener)
+    temaButonu.addEventListener("click", () => {
+      // İPUCU: toggle() metodu belirtilen class varsa siler, yoksa ekler.
+      body.classList.toggle("dark-theme");
+
+      // 3. ADIM: Yeni Durumu LocalStorage'a Kaydetme
+      // .contains() metodu body'de o an 'dark-theme' class'ı var mı diye bakar (true/false döner)
+      if (body.classList.contains("dark-theme")) {
+        // Eğer karanlık mod aktif olduysa, hafızaya 'dark' olarak kaydet
+        localStorage.setItem("kullaniciTemasi", "dark");
+        temaButonu.textContent = "☀️ Gündüz Modu";
+      } else {
+        // Eğer karanlık mod kapandıysa, hafızaya 'light' olarak kaydet
+        localStorage.setItem("kullaniciTemasi", "light");
+        temaButonu.textContent = "🌙 Gece Modu";
+      }
+    });
+  </script>
+
+</body>
+</html>
